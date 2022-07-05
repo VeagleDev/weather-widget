@@ -18,8 +18,8 @@ public slots:
         void getNewInfos();
         void searchCity();
         void textRefresh(QString newText);
-        void findCity(QNetworkReply *resp);
         void seeMoreInformations();
+        QString lookForICAO(QString nameOfCity);
 private:
         QLabel * value;
 

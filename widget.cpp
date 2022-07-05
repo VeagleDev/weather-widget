@@ -1,4 +1,3 @@
-//GitHub
 #include "widget.h"
 #include "QLabel"
 #include "QVBoxLayout"
@@ -113,6 +112,105 @@ void Window::replyFinished(QNetworkReply *resp){
   }
   else
       qDebug() << "Erreur de lecture";
+}
+
+QString Window::lookForICAO(QString nameOfCity)
+{
+  QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
+  QVector<QString> lines, infos;
+  QString toAdd(""), icao(""), iata(""), name("");
+
+  airports->open(QIODeviceBase::ReadOnly);
+  QString content = QString::fromUtf8(((airports->readAll())));
+  airports->close();
+
+  for(int i = 0; i < content.size(); i++)
+    {
+      if(content[i] == '\n')
+        {
+
+           lines.push_back(toAdd);
+           toAdd = "";
+
+
+        }
+      /*else if(content[i] == '\r')
+        {
+          if(toAdd != "")
+          {
+            lines.push_back(toAdd);
+            toAdd = "";
+          }
+          else break;
+        }*/
+      else
+        {
+          toAdd += content[i];
+        }
+    }
+  toAdd = "";
+  for(int j = 0; j < lines.size(); j++)
+    {
+      if(lines[j].endsWith(nameOfCity + '\r', Qt::CaseInsensitive))
+        {
+          for(int k = 0; k < lines[j].size(); k++)
+            {
+              if(lines[j][k] == ';' || lines[j][k] == '\0' || lines[j][k] == '\n' || lines[j][k] == '\r')
+                {
+                  infos.push_back(toAdd);
+                  toAdd = "";
+                }
+              else
+                {
+                  toAdd += lines[j][k];
+                }
+            }
+        }
+    }
+  if(infos.size() < 9)
+    {
+      qDebug() << "Infos non collectée (" << infos.size() << ")";
+      return "Error";
+    }
+  else if(infos.size() > 9)
+    {
+      int factor = infos.size() / 10;
+      qDebug() << factor << " aéroports trouvés (" << infos.size() << " infos)";
+      for(QString m : infos)
+        {
+          qDebug() << m;
+        }
+
+      bool hasFound = false;
+      for(int l = 0; l < factor; l++)
+        {
+          if(infos[0+(l*10)].startsWith("LF"))
+            {
+              icao = infos[0+(l*10)];
+              iata = infos[1+(l*10)];
+              name = infos[2+(l*10)];
+              hasFound = true;
+            }
+        }
+      if(!hasFound)
+        {
+          icao = infos[0];
+          iata = infos[1];
+          name = infos[2];
+        }
+      qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
+      return icao;
+    }
+  else
+    {
+      icao = infos[0];
+      iata = infos[1];
+      name = infos[2];
+      qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
+      return icao;
+    }
+
+
 }
 
 QString Window::correctTS(QString input)
@@ -244,6 +342,8 @@ Window::Window(QString val)
   QObject::connect(city, SIGNAL(textEdited(QString)), this, SLOT(textRefresh(QString)));
   QObject::connect(seeMore, SIGNAL(clicked()), this, SLOT(seeMoreInformations()));
 
+  lookForICAO("Nantes");
+
   QTimer *timer = new QTimer;
   connect(timer, &QTimer::timeout, this, &Window::getNewInfos);
   timer->singleShot(0, this, &Window::getNewInfos);
@@ -275,27 +375,8 @@ void Window::searchCity()
 {
   if(cityName == "")
     return;
-  QNetworkAccessManager *man = new QNetworkAccessManager(this);
-  connect(man, SIGNAL(finished(QNetworkReply*)), this, SLOT(findCity(QNetworkReply*)));
-  cityName.replace(" ", "_");
-  man->get(QNetworkRequest(QUrl("https://airportsbase.org/France/all/" + cityName)));
-}
-void Window::findCity(QNetworkReply *resp)
-{
-  QByteArray buffer = resp->read(20971520);
-  QString text = QString(buffer);
-  QString code = "";
-  for(int i = 0; i < text.size(); i++)
-    {
-      if(text[i] == 'L' && text[i+1] == 'F')
-        code = text.sliced(i,4);
-
-    }
-  if(code != "")
-    stationCode = code;
-
+  stationCode = lookForICAO(cityName);
   getNewInfos();
-
 }
 
 void Window::getNewInfos()
