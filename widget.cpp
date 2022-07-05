@@ -128,21 +128,9 @@ QString Window::lookForICAO(QString nameOfCity)
     {
       if(content[i] == '\n')
         {
-
            lines.push_back(toAdd);
            toAdd = "";
-
-
         }
-      /*else if(content[i] == '\r')
-        {
-          if(toAdd != "")
-          {
-            lines.push_back(toAdd);
-            toAdd = "";
-          }
-          else break;
-        }*/
       else
         {
           toAdd += content[i];
@@ -240,53 +228,6 @@ QString Window::correctTS(QString input)
 
       return input;
 }
-
-
-/*"raw_text,"
-"station_id,"
-"observation_time,"
-"latitude,"
-"longitude,"
-"temp_c,"
-"dewpoint_c,"
-"wind_dir_degrees,"
-"wind_speed_kt,"
-"wind_gust_kt,"
-"visibility_statute_mi,"
-"altim_in_hg,"
-"sea_level_pressure_mb,"
-"corrected,"
-"auto,"
-"auto_station,"
-"maintenance_indicator_on,"
-"no_signal,"
-"lightning_sensor_off,"
-"freezing_rain_sensor_off,"
-"present_weather_sensor_off,"
-"wx_string,"
-"sky_cover,"
-"cloud_base_ft_agl,"
-"sky_cover,"
-"cloud_base_ft_agl,"
-"sky_cover,"
-"cloud_base_ft_agl,"
-"sky_cover,"
-"cloud_base_ft_agl,"
-"flight_category,"
-"three_hr_pressure_tendency_mb,"
-"maxT_c,"
-"minT_c,"
-"maxT24hr_c,"
-"minT24hr_c,"
-"precip_in,"
-"pcp3hr_in,"
-"pcp6hr_in,"
-"pcp24hr_in,snow_in,"
-"vert_vis_ft,"
-"metar_type,"
-"elevation_m"
-*/
-
 
 Window::Window(QString val)
 {
