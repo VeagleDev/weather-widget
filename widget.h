@@ -37,6 +37,9 @@ private:
         QVector<QString> infos;
         QVector<QString> names;
 
+        QString airportName = "";
+        QString airportIATA = "";
+
         QString cityName = "Nantes";
 
         QString stationCode = "LFRS";

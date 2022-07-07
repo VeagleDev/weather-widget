@@ -101,13 +101,15 @@ void Window::replyFinished(QNetworkReply *resp){
 
 
 
-      station->setText("Station : " + infos[1]);
+      station->setText("Station : " + ( airportIATA == "" ? "Inconnu" : airportIATA ) + ( airportName == "" ? " - Inconnu" : (" - " + airportName)));
       date->setText("Date : " + correctTS(infos[2]));
       temp->setText("Température : " + infos[5] + "°C");
       wind_dir->setText("Direction du vent : " + infos[7] + "°");
       wind_speed->setText("Vitesse du vent : " + QString::number(round(infos[8].toDouble()*1.852*10)/10) + " km/h");
-      visibility->setText("Visibilité : " + QString::number((round((infos[10].toDouble())*1.609344*10))/10) + " km");
+      visibility->setText("Visibilité : " + ((infos[10] == "6.21") ? "> 10" : QString::number((round((infos[10].toDouble())*1.609344*10))/10)) + " km");
       cover->setText("Couverture : " + ((infos[22] == "CAVOK") ? "Ciel + Visibilité OK" : infos[22]));
+
+      qDebug() << "Width : " << this->width() << " ; Height : " << this->height();
 
   }
   else
@@ -163,11 +165,6 @@ QString Window::lookForICAO(QString nameOfCity)
   else if(infos.size() > 9)
     {
       int factor = infos.size() / 10;
-      qDebug() << factor << " aéroports trouvés (" << infos.size() << " infos)";
-      for(QString m : infos)
-        {
-          qDebug() << m;
-        }
 
       bool hasFound = false;
       for(int l = 0; l < factor; l++)
@@ -187,6 +184,8 @@ QString Window::lookForICAO(QString nameOfCity)
           name = infos[2];
         }
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
+      airportIATA = iata;
+      airportName = name;
       return icao;
     }
   else
@@ -195,6 +194,8 @@ QString Window::lookForICAO(QString nameOfCity)
       iata = infos[1];
       name = infos[2];
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
+      airportIATA = iata;
+      airportName = name;
       return icao;
     }
 
@@ -238,7 +239,10 @@ Window::Window(QString val)
 
 
 
-  setBaseSize(200,120);
+  setBaseSize(245,315);
+  setMinimumSize(220, 250);
+  setMaximumSize(310,440);
+  resize(245,315);
 
   QHBoxLayout * titleLayout = new QHBoxLayout;
   QHBoxLayout * cityLayout = new QHBoxLayout;
