@@ -1,27 +1,10 @@
 #include "widget.h"
-#include "QLabel"
-#include "QVBoxLayout"
-#include "QHBoxLayout"
-#include "QDir"
-#include "QPixmap"
-#include "QDialog"
-#include "QUrl"
-#include "QUrlQuery"
-#include "QVariant"
-#include "QString"
-#include "QFile"
-#include <limits>
-#include "QMessageBox"
 
-#include <string>
-#include "QTimer"
-#include "QNetworkAccessManager"
-#include "QNetworkRequest"
-#include "QNetworkReply"
-#include "QPushButton"
 
 
 void Window::replyFinished(QNetworkReply *resp){
+ QTime before = QTime::currentTime();
+ int msb = before.msecsSinceStartOfDay();
   bool ok;
   bool test;
   int code = resp->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(&ok);
@@ -111,13 +94,19 @@ void Window::replyFinished(QNetworkReply *resp){
 
       qDebug() << "Width : " << this->width() << " ; Height : " << this->height();
 
+
+      int msa = QTime::currentTime().msecsSinceStartOfDay();
+      qDebug() << "ms pour trouver temp " << QString::number(msa - msb);
+
   }
   else
       qDebug() << "Erreur de lecture";
 }
 
-QString Window::lookForICAO(QString nameOfCity)
+QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
 {
+  QTime before = QTime::currentTime();
+  int msb = before.msecsSinceStartOfDay();
   QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
   QVector<QString> lines, infos;
   QString toAdd(""), icao(""), iata(""), name("");
@@ -167,13 +156,16 @@ QString Window::lookForICAO(QString nameOfCity)
       int factor = infos.size() / 10;
 
       bool hasFound = false;
+      if(needUpdate)
+      {
       for(int l = 0; l < factor; l++)
         {
           if(infos[0+(l*10)].startsWith("LF"))
             {
-              icao = infos[0+(l*10)];
-              iata = infos[1+(l*10)];
-              name = infos[2+(l*10)];
+
+                icao = infos[0+(l*10)];
+                iata = infos[1+(l*10)];
+                name = infos[2+(l*10)];
               hasFound = true;
             }
         }
@@ -183,22 +175,48 @@ QString Window::lookForICAO(QString nameOfCity)
           iata = infos[1];
           name = infos[2];
         }
+
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
       airportIATA = iata;
       airportName = name;
+      }
+      cityList.clear();
+      for(int g = 9; g < infos.size(); g += 10)
+      {
+          cityList << infos[g];
+      }
+      //completer->setCompletionMode(QCompleter::PopupCompletion);
+      completer = new QCompleter(cityList, this);
+      city->setCompleter(completer);
+
+      qDebug() << cityList;
+
+      QTime after = QTime::currentTime();
+      int msa = after.msecsSinceStartOfDay();
+      qDebug() << "ms pour trouver ICAO : " << QString::number(msa - msb);
       return icao;
     }
   else
     {
+      if(needUpdate)
+      {
       icao = infos[0];
       iata = infos[1];
       name = infos[2];
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
       airportIATA = iata;
       airportName = name;
+      }
+      cityList.clear();
+      cityList << infos[2];
       return icao;
     }
 
+
+}
+
+QStringList findSimilarAirport(QString nameOfTheCity)
+{
 
 }
 
@@ -237,6 +255,12 @@ Window::Window(QString val)
 
   icon->setPixmap(QPixmap(QDir::currentPath() + "/icon.png").scaled(43,43));
 
+
+
+  QCompleter * completer = new QCompleter(cityList, this);
+  completer->setCaseSensitivity(Qt::CaseInsensitive);
+  completer->setMaxVisibleItems(10);
+  city->setCompleter(completer);
 
 
   setBaseSize(245,315);
@@ -295,6 +319,8 @@ Window::Window(QString val)
   timer->start(1000*60);
 
 
+
+
 }
 
 void Window::seeMoreInformations()
@@ -315,6 +341,8 @@ void Window::seeMoreInformations()
 void Window::textRefresh(QString newText)
 {
   cityName = newText;
+  if(newText.size() > 3)
+      lookForICAO(newText, false);
 }
 void Window::searchCity()
 {
