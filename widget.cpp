@@ -130,7 +130,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
   toAdd = "";
   for(int j = 0; j < lines.size(); j++)
     {
-      if(lines[j].contains(nameOfCity, Qt::CaseInsensitive))
+      if(lines[j].contains(nameOfCity, Qt::CaseSensitive))
         {
           for(int k = 0; k < lines[j].size(); k++)
             {
@@ -152,21 +152,24 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       return "Error";
     }
   else if(infos.size() > 9)
+
+
     {
+      qDebug() << infos;
       int factor = infos.size() / 10;
 
       bool hasFound = false;
 
       for(int l = 0; l < factor; l++)
         {
-          if(infos[0+(l*10)].startsWith("LF"))
+          /*if(infos[0+(l*10)].startsWith("LF"))
             {
 
                 icao = infos[0+(l*10)];
                 iata = infos[1+(l*10)];
                 name = infos[2+(l*10)];
               hasFound = true;
-            }
+            }*/
         }
       if(!hasFound)
         {
@@ -229,7 +232,7 @@ QStringList findSimilarAirport(QString nameOfTheCity)
     toAdd = "";
     for(int j = 0; j < lines.size(); j++)
       {
-        if(lines[j].endsWith(nameOfTheCity + '\r', Qt::CaseInsensitive))
+        if(lines[j].contains(nameOfTheCity, Qt::CaseInsensitive))
           {
             for(int k = 0; k < lines[j].size(); k++)
               {
@@ -326,7 +329,7 @@ Window::Window(QString val)
   mainLayout->addLayout(titleLayout, Qt::AlignTop);
 
 
-  //city->setFixedHeight(20);
+  city->setFixedSize(200,25);
   cityLayout->addWidget(c_label, Qt::AlignJustify);
   cityLayout->addWidget(city, Qt::AlignLeft);
 
@@ -353,7 +356,7 @@ Window::Window(QString val)
 
   connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
   QObject::connect(city, SIGNAL(editingFinished()), this, SLOT(searchCity()));
-  QObject::connect(city, SIGNAL(textEdited(QString)), this, SLOT(textRefresh(QString)));
+  QObject::connect(city, SIGNAL(textChanged(QString)), this, SLOT(textRefresh(QString)));
   QObject::connect(seeMore, SIGNAL(clicked()), this, SLOT(seeMoreInformations()));
 
   lookForICAO("Nantes");
