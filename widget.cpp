@@ -130,7 +130,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
   toAdd = "";
   for(int j = 0; j < lines.size(); j++)
     {
-      if(lines[j].endsWith(nameOfCity + '\r', Qt::CaseInsensitive))
+      if(lines[j].contains(nameOfCity, Qt::CaseInsensitive))
         {
           for(int k = 0; k < lines[j].size(); k++)
             {
@@ -206,6 +206,61 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
 
 QStringList findSimilarAirport(QString nameOfTheCity)
 {
+    QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
+    QVector<QString> lines, infos;
+    QString toAdd("");
+    QStringList cityAirportList;
+    airports->open(QIODeviceBase::ReadOnly);
+    QString content = QString::fromUtf8(((airports->readAll())));
+    airports->close();
+
+    for(int i = 0; i < content.size(); i++)
+      {
+        if(content[i] == '\n')
+          {
+             lines.push_back(toAdd);
+             toAdd = "";
+          }
+        else
+          {
+            toAdd += content[i];
+          }
+      }
+    toAdd = "";
+    for(int j = 0; j < lines.size(); j++)
+      {
+        if(lines[j].endsWith(nameOfTheCity + '\r', Qt::CaseInsensitive))
+          {
+            for(int k = 0; k < lines[j].size(); k++)
+              {
+                if(lines[j][k] == ';' || lines[j][k] == '\0' || lines[j][k] == '\n' || lines[j][k] == '\r')
+                  {
+                    infos.push_back(toAdd);
+                    toAdd = "";
+                  }
+                else
+                  {
+                    toAdd += lines[j][k];
+                  }
+              }
+          }
+      }
+    if(infos.size() < 9)
+      {
+        qDebug() << "Infos non collectée (" << infos.size() << ")";
+      }
+    else if(infos.size() > 9)
+      {
+        for(int g = 2; g < infos.size(); g += 10)
+        {
+            cityAirportList << infos[g];
+        }
+      }
+    else
+      {
+            cityAirportList << infos[2];
+      }
+    return cityAirportList;
 
 
 }
@@ -271,7 +326,7 @@ Window::Window(QString val)
   mainLayout->addLayout(titleLayout, Qt::AlignTop);
 
 
-  city->setFixedSize(100,20);
+  //city->setFixedHeight(20);
   cityLayout->addWidget(c_label, Qt::AlignJustify);
   cityLayout->addWidget(city, Qt::AlignLeft);
 
@@ -332,7 +387,10 @@ void Window::textRefresh(QString newText)
 {
   cityName = newText;
   if(newText.size() > 3)
-      lookForICAO(newText, false);
+  {
+      completer = new QCompleter(findSimilarAirport(newText), this);
+      city->setCompleter(completer);
+  }
 }
 void Window::searchCity()
 {
