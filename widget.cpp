@@ -156,8 +156,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       int factor = infos.size() / 10;
 
       bool hasFound = false;
-      if(needUpdate)
-      {
+
       for(int l = 0; l < factor; l++)
         {
           if(infos[0+(l*10)].startsWith("LF"))
@@ -179,17 +178,8 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
       airportIATA = iata;
       airportName = name;
-      }
-      cityList.clear();
-      for(int g = 9; g < infos.size(); g += 10)
-      {
-          cityList << infos[g];
-      }
-      //completer->setCompletionMode(QCompleter::PopupCompletion);
-      completer = new QCompleter(cityList, this);
-      city->setCompleter(completer);
 
-      qDebug() << cityList;
+
 
       QTime after = QTime::currentTime();
       int msa = after.msecsSinceStartOfDay();
@@ -198,8 +188,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
     }
   else
     {
-      if(needUpdate)
-      {
+
       icao = infos[0];
       iata = infos[1];
       name = infos[2];
@@ -210,13 +199,14 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       cityList.clear();
       cityList << infos[2];
       return icao;
-    }
+
 
 
 }
 
 QStringList findSimilarAirport(QString nameOfTheCity)
 {
+
 
 }
 
