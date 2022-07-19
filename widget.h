@@ -63,6 +63,10 @@ private:
         QString airportName = "";
         QString airportIATA = "";
 
+        QString latitude = "";
+        QString longitude = "";
+        QString country = "";
+
         QString cityName = "Nantes";
 
         QString stationCode = "LFRS";

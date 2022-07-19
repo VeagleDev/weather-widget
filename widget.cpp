@@ -81,9 +81,9 @@ void Window::replyFinished(QNetworkReply *resp){
       infos.push_back(toAdd);
       toAdd = "";
 
+     //qDebug() << infos;
 
-
-      station->setText("Station : " + ( airportIATA == "" ? "Inconnu" : airportIATA ) + ( airportName == "" ? " - Inconnu" : (" - " + airportName)));
+      station->setText("Station : " + ((latitude != "" && longitude != "") ? ("<a href=\"https://www.google.com/maps/place/" + latitude + "," + longitude + "\">") : "") + ( airportName == "" ? " Inconnu" : (airportName)) + (country != "" ? ", " + country : ", Inconnu") + ( airportIATA == "" ? " - Inconnu" : " - " + airportIATA ) +  + ((latitude != "" && longitude != "") ? "</a>" : ""));
       date->setText("Date : " + correctTS(infos[2]));
       temp->setText("Température : " + infos[5] + "°C");
       wind_dir->setText("Direction du vent : " + infos[7] + "°");
@@ -161,6 +161,9 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
         }
 
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
+      country = infos[7];
+      latitude = infos[3];
+      longitude = infos[4];
       airportIATA = iata;
       airportName = name;
 
@@ -177,6 +180,9 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       icao = infos[0];
       iata = infos[1];
       name = infos[2];
+      country = infos[7];
+      latitude = infos[3];
+      longitude = infos[4];
       qDebug() << "Aéroport de " << nameOfCity << " (" << name << ") - ICAO : " << icao << " - IATA : " << iata;
       airportIATA = iata;
       airportName = name;
@@ -289,8 +295,8 @@ Window::Window(QString val)
 
 
   setBaseSize(245,315);
-  setMinimumSize(220, 250);
-  setMaximumSize(310,440);
+  setMinimumSize(220, 270);
+  setMaximumSize(350,440);
   resize(245,315);
 
   QHBoxLayout * titleLayout = new QHBoxLayout;
@@ -320,6 +326,9 @@ Window::Window(QString val)
   contentLayout->addWidget(visibility);
   contentLayout->addWidget(cover);
   contentLayout->addWidget(seeMore, Qt::AlignRight);
+
+  station->setOpenExternalLinks(true);
+  station->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
   city->setText("Nantes");
 
