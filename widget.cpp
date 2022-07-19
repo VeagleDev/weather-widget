@@ -36,7 +36,7 @@ void Window::replyFinished(QNetworkReply *resp){
               qDebug() << "Ligne de " + stationCode +" : " << k;
               lfrs += k;
             }
-          if(k.startsWith("raw_text", Qt::CaseSensitive))
+          if(k.startsWith("raw_text", Qt::CaseInsensitive))
               name += k;
         }
        if(lfrs == "")
@@ -130,7 +130,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
   toAdd = "";
   for(int j = 0; j < lines.size(); j++)
     {
-      if(lines[j].contains(nameOfCity, Qt::CaseSensitive))
+      if(lines[j].contains(nameOfCity, Qt::CaseInsensitive))
         {
           for(int k = 0; k < lines[j].size(); k++)
             {
@@ -234,6 +234,7 @@ QStringList findSimilarAirport(QString nameOfTheCity)
       {
         if(lines[j].contains(nameOfTheCity, Qt::CaseInsensitive))
           {
+            qDebug() << "Ligne trouvée : " << lines[j];
             for(int k = 0; k < lines[j].size(); k++)
               {
                 if(lines[j][k] == ';' || lines[j][k] == '\0' || lines[j][k] == '\n' || lines[j][k] == '\r')
@@ -389,10 +390,15 @@ void Window::seeMoreInformations()
 void Window::textRefresh(QString newText)
 {
   cityName = newText;
-  if(newText.size() > 3)
+  if(newText.size() >= 3)
   {
       completer = new QCompleter(findSimilarAirport(newText), this);
+      completer->setCaseSensitivity(Qt::CaseInsensitive);
       city->setCompleter(completer);
+  }
+  else
+  {
+      city->setCompleter(new QCompleter(this));
   }
 }
 void Window::searchCity()
