@@ -33,7 +33,6 @@ void Window::replyFinished(QNetworkReply *resp){
         {
           if(k.startsWith(stationCode, Qt::CaseInsensitive))
             {
-              qDebug() << "Ligne de " + stationCode +" : " << k;
               lfrs += k;
             }
           if(k.startsWith("raw_text", Qt::CaseInsensitive))
@@ -91,12 +90,6 @@ void Window::replyFinished(QNetworkReply *resp){
       wind_speed->setText("Vitesse du vent : " + QString::number(round(infos[8].toDouble()*1.852*10)/10) + " km/h");
       visibility->setText("Visibilité : " + ((infos[10] == "6.21") ? "> 10" : QString::number((round((infos[10].toDouble())*1.609344*10))/10)) + " km");
       cover->setText("Couverture : " + ((infos[22] == "CAVOK") ? "Ciel + Visibilité OK" : infos[22]));
-
-      qDebug() << "Width : " << this->width() << " ; Height : " << this->height();
-
-
-      int msa = QTime::currentTime().msecsSinceStartOfDay();
-      qDebug() << "ms pour trouver temp " << QString::number(msa - msb);
 
   }
   else
@@ -194,38 +187,6 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 QStringList findSimilarAirport(QString nameOfTheCity)
 {
     QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
@@ -256,7 +217,6 @@ QStringList findSimilarAirport(QString nameOfTheCity)
 
         if((lines[j].contains(nameOfTheCity, Qt::CaseInsensitive) && nameOfTheCity.length() > 3) || (nameOfTheCity.length() == 3 && lines[j].contains(nameOfTheCity.toUpper(), Qt::CaseSensitive)))
           {
-            qDebug() << "Ligne trouvée : " << lines[j];
             for(int k = 0; k < lines[j].size(); k++)
               {
                 if(lines[j][k] == ';' || lines[j][k] == '\0' || lines[j][k] == '\n' || lines[j][k] == '\r')
@@ -290,34 +250,6 @@ QStringList findSimilarAirport(QString nameOfTheCity)
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 QString Window::correctTS(QString input)
 {
@@ -354,12 +286,6 @@ Window::Window(QString val)
 
   icon->setPixmap(QPixmap(QDir::currentPath() + "/icon.png").scaled(43,43));
 
-
-
-  QCompleter * completer = new QCompleter(cityList, this);
-  completer->setCaseSensitivity(Qt::CaseInsensitive);
-  completer->setMaxVisibleItems(10);
-  city->setCompleter(completer);
 
 
   setBaseSize(245,315);
@@ -442,9 +368,12 @@ void Window::textRefresh(QString newText)
   cityName = newText;
   if(newText.size() > 2)
   {
-      completer = new QCompleter(findSimilarAirport(newText), this);
+      QStringList air = findSimilarAirport(newText);
+      completer = new QCompleter(air, this);
+      qDebug() << air;
+      completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
       completer->setCaseSensitivity(Qt::CaseInsensitive);
-      completer->setMaxVisibleItems(30);
+      completer->setMaxVisibleItems(10);
       city->setCompleter(completer);
   }
   else
