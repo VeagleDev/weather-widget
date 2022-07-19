@@ -4,7 +4,7 @@
 <hr />
 
 ### Here are some pictures of the application : 
-<ur>
+<ol>
     <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/image0.png">
     <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/image1.png">
-</ur>
+</ol>
