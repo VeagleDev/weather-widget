@@ -130,7 +130,7 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
   toAdd = "";
   for(int j = 0; j < lines.size(); j++)
     {
-      if(lines[j].contains(nameOfCity, Qt::CaseInsensitive))
+      if((lines[j].contains(nameOfCity, Qt::CaseInsensitive) && nameOfCity.length() > 3) || (lines[j].contains(nameOfCity.toUpper(), Qt::CaseSensitive) && nameOfCity.length() == 3))
         {
           for(int k = 0; k < lines[j].size(); k++)
             {
@@ -160,17 +160,6 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
 
       bool hasFound = false;
 
-      for(int l = 0; l < factor; l++)
-        {
-          /*if(infos[0+(l*10)].startsWith("LF"))
-            {
-
-                icao = infos[0+(l*10)];
-                iata = infos[1+(l*10)];
-                name = infos[2+(l*10)];
-              hasFound = true;
-            }*/
-        }
       if(!hasFound)
         {
           icao = infos[0];
@@ -202,10 +191,40 @@ QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
       cityList.clear();
       cityList << infos[2];
       return icao;
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 QStringList findSimilarAirport(QString nameOfTheCity)
 {
@@ -229,10 +248,13 @@ QStringList findSimilarAirport(QString nameOfTheCity)
             toAdd += content[i];
           }
       }
+
     toAdd = "";
+
     for(int j = 0; j < lines.size(); j++)
       {
-        if(lines[j].contains(nameOfTheCity, Qt::CaseInsensitive))
+
+        if((lines[j].contains(nameOfTheCity, Qt::CaseInsensitive) && nameOfTheCity.length() > 3) || (nameOfTheCity.length() == 3 && lines[j].contains(nameOfTheCity.toUpper(), Qt::CaseSensitive)))
           {
             qDebug() << "Ligne trouvée : " << lines[j];
             for(int k = 0; k < lines[j].size(); k++)
@@ -268,6 +290,34 @@ QStringList findSimilarAirport(QString nameOfTheCity)
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 QString Window::correctTS(QString input)
 {
@@ -390,10 +440,11 @@ void Window::seeMoreInformations()
 void Window::textRefresh(QString newText)
 {
   cityName = newText;
-  if(newText.size() >= 3)
+  if(newText.size() > 2)
   {
       completer = new QCompleter(findSimilarAirport(newText), this);
       completer->setCaseSensitivity(Qt::CaseInsensitive);
+      completer->setMaxVisibleItems(30);
       city->setCompleter(completer);
   }
   else
