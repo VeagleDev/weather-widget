@@ -6,7 +6,7 @@
 */
 
 #include "widget.hpp"
-
+#include "QMetaEnum"
 
 
 void Window::replyFinished(QNetworkReply *resp){
@@ -88,8 +88,6 @@ void Window::replyFinished(QNetworkReply *resp){
       infos.push_back(toAdd);
       toAdd = "";
 
-     //qDebug() << infos;
-
       station->setText("Station : " + ((latitude != "" && longitude != "") ? ("<a href=\"https://www.google.com/maps/place/" + latitude + "," + longitude + "\">") : "") + ( airportName == "" ? " Inconnu" : (airportName)) + (country != "" ? ", " + country : ", Inconnu") + ( airportIATA == "" ? " - Inconnu" : " - " + airportIATA ) +  + ((latitude != "" && longitude != "") ? "</a>" : ""));
       date->setText("Date : " + correctTS(infos[2]));
 
@@ -99,12 +97,34 @@ void Window::replyFinished(QNetworkReply *resp){
       wind_dir->setText("Direction du vent : " + infos[7] + "°");
       wind_speed->setText("Vitesse du vent : " + QString::number(round(infos[8].toDouble()*1.852*10)/10) + " km/h");
       visibility->setText("Visibilité : " + ((infos[10] == "6.21") ? "> 10" : QString::number((round((infos[10].toDouble())*1.609344*10))/10)) + " km");
-      cover->setText("Couverture : " + ((infos[22] == "CAVOK") ? "Ciel + Visibilité OK" : infos[22]));
+
+
+      // On créé un dictionnaire qui au code, renvoie la définition
+      std::map<QString, QString> skyCover;
+      skyCover["SKC"] = "Aucun Nuage (0/8)";
+      skyCover["FEW"] = "Quelques Nuages (1/8)";
+      skyCover["SCT"] = "Nuages Épars (3/8)";
+      skyCover["BKN"] = "Nuages Fragmentés (6/8)";
+      skyCover["OVC"] = "Ciel Couvert (8/8)";
+      skyCover["NSC"] = "Pas de Nuages Significatifs (1/8)";
+      skyCover["NCD"] = "Aucun Nuage (0/8)";
+      skyCover["CAVOK"] = "Aucun Nuage, bonne visibilité (0/8)";
+
+      // On cherche pour le code donné
+      std::map<QString, QString>::iterator it = skyCover.find(infos[22]);
+      if(it != skyCover.end()) // Si c'est trouvé, on met la définition
+          cover->setText("Couverture : " + it->second);
+      else
+          cover->setText("Couverture : " + infos[22]); // Si ça ne trouve pas la définition, ça met le code
 
   }
   else
       qDebug() << "Erreur de lecture";
 }
+
+
+
+
 
 QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
 {

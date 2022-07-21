@@ -22,22 +22,20 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/img/icon.rc")
     qt_add_executable(WeathGet
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${app_icon_resource_windows}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET WeathGet APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+
+
 else()
     if(ANDROID)
         add_library(WeathGet SHARED
             ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
+   else()
         add_executable(WeathGet
             ${PROJECT_SOURCES}
         )
@@ -57,6 +55,7 @@ set_target_properties(WeathGet PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(WeathGet)
 endif()
+
 
 find_package(Qt6 REQUIRED COMPONENTS Network)
 target_link_libraries(WeathGet PRIVATE Qt6::Network)

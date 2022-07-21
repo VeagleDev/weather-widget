@@ -86,7 +86,10 @@ private:
           QCompleter * completer;
 
 
+
 };
+
+
 
 
 #endif // WIDGET_H
