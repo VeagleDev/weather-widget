@@ -18,3 +18,16 @@
 * Enter the folder and run WeathGet.exe
 * If an warning message appear, just ignore it (don't be frightened, the source code is [here](https://github.com/Mysterious-Developers/weather-widget) and it's just because I'm not approved by Microsoft
 * If you have an error, you can report it [here](https://github.com/Mysterious-Developers/weather-widget/issues)
+
+<hr />
+
+### How to contribute to the WeathGet project ?
+
+##### To contribute, there is lot of ways, you can : 
+
+* Report *bugs* or *suggest* improvements on the [issue page](https://github.com/Mysterious-Developers/weather-widget/issues).
+* React with the **already existing** [issues](https://github.com/Mysterious-Developers/weather-widget/issues).
+* **Share the project** to your friends or people which could be interessed.
+* Come in the [discussions](https://github.com/Mysterious-Developers/weather-widget/discussions) to talk about problems, features or others.
+* Write *articles* in the open [Wiki](https://github.com/Mysterious-Developers/weather-widget/wiki)
+* **Submit pull requests**, for that, you can check the **[CONTRIBUTING.md](https://github.com/Mysterious-Developers/weather-widget/blob/main/CONTRIBUTING.md)** file.
