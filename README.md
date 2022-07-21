@@ -8,3 +8,13 @@
     <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/image0.png">
     <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/image1.png">
 </ol>
+
+<hr />
+
+### How to install WeathGet ?
+
+* Download the [latest release](https://github.com/mysterious-Developers/weather-widget/releases/latest)
+* Extract the .zip archive
+* Enter the folder and run WeathGet.exe
+* If an warning message appear, just ignore it (don't be frightened, the source code is [here](https://github.com/Mysterious-Developers/weather-widget) and it's just because I'm not approved by Microsoft
+* If you have an error, you can report it [here](https://github.com/Mysterious-Developers/weather-widget/issues)
