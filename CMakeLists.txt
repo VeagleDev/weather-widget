@@ -17,7 +17,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 set(PROJECT_SOURCES
         main.cpp
         widget.cpp
-        widget.h
+        widget.hpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
