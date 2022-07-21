@@ -1,4 +1,3 @@
-
 > I really want to thank all the people who contribute to the project, thank you !
 
 ## To open Pull requests, it's really simple : 
@@ -14,10 +13,10 @@
 ## Contributors
 ###### List of all the contributors
 
-@pierrbt (main dev)
-@denisbt (lots of issues and help)
-@Martinltx (issues)
-@davidmegginson (airport informations)
+* @pierrbt (main dev)
+* @denisbt (lots of issues and help)
+* @Martinltx (issues)
+* @davidmegginson (airport informations)
 
 
 Mysterious Developers - 2022
