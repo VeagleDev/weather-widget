@@ -1,3 +1,10 @@
+/*
+* Mysterious Developers © 2022
+* Language : C++
+* Author : pierrbt
+* Name : WeathGet (weather-widget)
+*/
+
 #include "widget.hpp"
 
 
