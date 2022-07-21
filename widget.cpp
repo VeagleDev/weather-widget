@@ -92,7 +92,10 @@ void Window::replyFinished(QNetworkReply *resp){
 
       station->setText("Station : " + ((latitude != "" && longitude != "") ? ("<a href=\"https://www.google.com/maps/place/" + latitude + "," + longitude + "\">") : "") + ( airportName == "" ? " Inconnu" : (airportName)) + (country != "" ? ", " + country : ", Inconnu") + ( airportIATA == "" ? " - Inconnu" : " - " + airportIATA ) +  + ((latitude != "" && longitude != "") ? "</a>" : ""));
       date->setText("Date : " + correctTS(infos[2]));
-      temp->setText("Température : " + infos[5] + "°C");
+
+      // Si la temperature est connue, ça affiche la température avec °C, sinon ça affiche N/A
+      temp->setText("Température : " + ((infos[5] != "Inconnu") ? (infos[5] + "°C") : ("N/A")));
+
       wind_dir->setText("Direction du vent : " + infos[7] + "°");
       wind_speed->setText("Vitesse du vent : " + QString::number(round(infos[8].toDouble()*1.852*10)/10) + " km/h");
       visibility->setText("Visibilité : " + ((infos[10] == "6.21") ? "> 10" : QString::number((round((infos[10].toDouble())*1.609344*10))/10)) + " km");
