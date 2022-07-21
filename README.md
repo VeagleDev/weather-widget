@@ -30,4 +30,4 @@
 * **Share the project** to your friends or people which could be interessed.
 * Come in the [discussions](https://github.com/Mysterious-Developers/weather-widget/discussions) to talk about problems, features or others.
 * Write *articles* in the open [Wiki](https://github.com/Mysterious-Developers/weather-widget/wiki)
-* **Submit pull requests**, for that, you can check the **`[CONTRIBUTING.md](https://github.com/Mysterious-Developers/weather-widget/blob/main/CONTRIBUTING.md)`** file.
+* **Submit pull requests**, for that, you can check the [CONTRIBUTING.md](https://github.com/Mysterious-Developers/weather-widget/blob/main/CONTRIBUTING.md) file.
