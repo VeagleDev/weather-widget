@@ -18,6 +18,9 @@ set(PROJECT_SOURCES
         main.cpp
         widget.cpp
         widget.hpp
+        includes.hpp
+        tools.cpp
+        ui.cpp
 
 )
 
