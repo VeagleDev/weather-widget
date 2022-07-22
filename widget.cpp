@@ -125,7 +125,7 @@ void Window::replyFinished(QNetworkReply *resp){
 
 
 
-QString Window::lookForICAO(QString nameOfCity, bool needUpdate = true)
+QString Window::lookForICAO(QString nameOfCity)
 {
   QTime before = QTime::currentTime();
   int msb = before.msecsSinceStartOfDay();
@@ -336,20 +336,7 @@ QString Window::correctTS(QString input)
 
 
 
-void Window::seeMoreInformations()
-{
-  QString txt;
-  int index = 1;
-  for(int i = 0; i < infos.size(); ++i)
-    {
-    if(infos[i] != "Inconnu" && infos[i] != "")
-      {
-      txt += "Info n°" + QString::number(index) + " (" + names[i] + ") : " + infos[i] + "\n";
-      ++index;
-      }
-    }
-  QMessageBox::information(this, "Informations complètes", txt);
-}
+
 
 void Window::textRefresh(QString newText)
 {

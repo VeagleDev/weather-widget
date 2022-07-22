@@ -15,18 +15,19 @@ class Window : public QWidget
   Q_OBJECT
 
 public:
-        Window(QString val = "0°");
+        Window(QString val = " - ", QString version = "N/A");
 public slots:
         void replyFinished(QNetworkReply *resp);
         void getNewInfos();
         void searchCity();
         void textRefresh(QString newText);
         void seeMoreInformations();
-        QString lookForICAO(QString nameOfCity, bool updateDate);
+        void displayLicense();
+        QString lookForICAO(QString nameOfCity);
 private:
         QLabel * value;
-
-        QLabel * name = new QLabel("Weather");
+        QString appVersion = "N/A";
+        QLabel * name;
         QLabel * icon = new QLabel;
         QLabel  * station = new QLabel("Station : - ");
         QLabel  * date = new QLabel("Date : - ");
