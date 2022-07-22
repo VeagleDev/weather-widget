@@ -3,6 +3,7 @@
 * Language : C++
 * Author : pierrbt
 * Name : WeathGet (weather-widget)
+* Website : mysteriousdev.fr
 */
 
 #include "widget.hpp"
