@@ -7,10 +7,12 @@ Window::Window(QString val, QString version)
   icon->setPixmap(QPixmap(QDir::currentPath() + "/img/icon.png").scaled(43,43));
   setWindowIcon(QIcon(QPixmap(QDir::currentPath() + "/img/icon.png")));
 
+  connect(updateManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updateReplyFinished(QNetworkReply*)));
+  updateManager->get(QNetworkRequest(QUrl("https://www.mysteriousdev.fr/wg.version")));
+
   name = new QLabel("Weather <br>&nbsp;&nbsp;<font color=\"#666666\">v" + version + "</font>");
 
-  setBaseSize(255,330
-              );
+  setBaseSize(255,330);
   setMinimumSize(220, 270);
   setMaximumSize(400,440);
   resize(255,330);
@@ -61,11 +63,15 @@ Window::Window(QString val, QString version)
   setLayout(mainLayout);
 
   connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+
+
   QObject::connect(city, SIGNAL(editingFinished()), this, SLOT(searchCity()));
   QObject::connect(city, SIGNAL(textChanged(QString)), this, SLOT(textRefresh(QString)));
   QObject::connect(seeMore, SIGNAL(clicked()), this, SLOT(seeMoreInformations()));
   QObject::connect(license, SIGNAL(clicked()), this, SLOT(displayLicense()));
 
+
+  manager->get(QNetworkRequest(QUrl("https://aviationweather-cprk.ncep.noaa.gov/adds/dataserver_current/current/metars.cache.csv")));
   lookForICAO("Nantes");
 
   QTimer *timer = new QTimer;

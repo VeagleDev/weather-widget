@@ -11,7 +11,7 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  QFile * file = new QFile(QDir::currentPath() + "/version.txt");
+  QFile * file = new QFile(QDir::currentPath() + "/tools/version.txt");
   QString version;
   if(file->open(QFile::ReadOnly))
   {

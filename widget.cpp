@@ -152,7 +152,7 @@ QString Window::lookForICAO(QString nameOfCity)
 {
   QTime before = QTime::currentTime();
   int msb = before.msecsSinceStartOfDay();
-  QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
+  QFile * airports = new QFile(QDir::currentPath() + "/tools/airports.csv");
   QVector<QString> lines, infos;
   QString toAdd(""), icao(""), iata(""), name("");
 
@@ -247,7 +247,7 @@ QString Window::lookForICAO(QString nameOfCity)
 
 QStringList findSimilarAirport(QString nameOfTheCity)
 {
-    QFile * airports = new QFile(QDir::currentPath() + "/airports.csv");
+    QFile * airports = new QFile(QDir::currentPath() + "/tools/airports.csv");
     QVector<QString> lines, infos;
     QString toAdd("");
     QStringList cityAirportList;

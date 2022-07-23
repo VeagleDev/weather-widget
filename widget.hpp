@@ -18,15 +18,21 @@ public:
         Window(QString val = " - ", QString version = "N/A");
 public slots:
         void replyFinished(QNetworkReply *resp);
+        void updateReplyFinished(QNetworkReply *resp);
         void getNewInfos();
         void searchCity();
         void textRefresh(QString newText);
         void seeMoreInformations();
         void displayLicense();
+        void goForUpdate(float newVersion);
         QString lookForICAO(QString nameOfCity);
+        QString correctTS(QString input);
 private:
+
+
+
+
         QLabel * value;
-        QString appVersion = "N/A";
         QLabel * name;
         QLabel * icon = new QLabel;
         QLabel  * station = new QLabel("Station : - ");
@@ -38,29 +44,24 @@ private:
         QLabel  * cover = new QLabel("Couverture : - ");
         QLineEdit * city = new QLineEdit;
         QLabel * c_label = new QLabel("Ville : ");
+        QCompleter * completer;
+
         QVector<QString> infos;
         QVector<QString> names;
 
         QString airportName = "";
         QString airportIATA = "";
-
         QString latitude = "";
         QString longitude = "";
         QString country = "";
-
         QString cityName = "Nantes";
-
         QString stationCode = "LFRS";
-
-        QString correctTS(QString input);
+        QString appVersion = "N/A";
 
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+        QNetworkAccessManager *updateManager = new QNetworkAccessManager(this);
 
-          QStringList cityList;
-          QCompleter * completer;
-
-
-
+        QStringList cityList;
 };
 
 

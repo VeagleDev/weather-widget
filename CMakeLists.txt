@@ -19,6 +19,7 @@ set(PROJECT_SOURCES
         widget.cpp
         widget.hpp
         includes.hpp
+        update.cpp
         tools.cpp
         ui.cpp
 
