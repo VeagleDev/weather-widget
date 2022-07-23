@@ -109,12 +109,29 @@ void Window::replyFinished(QNetworkReply *resp){
       skyCover["NCD"] = "Aucun Nuage (0/8)";
       skyCover["CAVOK"] = "Aucun Nuage, bonne visibilité (0/8)";
 
+      std::map<QString, QPixmap> skyImages;
+      skyImages["SKC"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
+      skyImages["FEW"] = QPixmap(QDir::currentPath() + "/img/clouds/few.png", "PNG");
+      skyImages["SCT"] = QPixmap(QDir::currentPath() + "/img/clouds/sct.png", "PNG");
+      skyImages["BKN"] = QPixmap(QDir::currentPath() + "/img/clouds/bkn.png", "PNG");
+      skyImages["OVC"] = QPixmap(QDir::currentPath() + "/img/clouds/ovc.png", "PNG");
+      skyImages["NSC"] = QPixmap(QDir::currentPath() + "/img/clouds/few.png", "PNG");
+      skyImages["NCD"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
+      skyImages["CAVOK"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
+
       // On cherche pour le code donné
       std::map<QString, QString>::iterator it = skyCover.find(infos[22]);
-      if(it != skyCover.end()) // Si c'est trouvé, on met la définition
+      std::map<QString, QPixmap>::iterator it2 = skyImages.find(infos[22]);
+
+      if(it != skyCover.end() && it2 != skyImages.end())
+      {         // Si c'est trouvé, on met la définition
           cover->setText("Couverture : " + it->second);
+          coverImage->setPixmap(it2->second.scaled(35,28));
+      }
       else
+      {
           cover->setText("Couverture : " + infos[22]); // Si ça ne trouve pas la définition, ça met le code
+      }
 
   }
   else

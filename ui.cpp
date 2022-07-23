@@ -12,15 +12,16 @@ Window::Window(QString val, QString version)
 
   name = new QLabel("Weather <br>&nbsp;&nbsp;<font color=\"#666666\">v" + version + "</font>");
 
-  setBaseSize(255,330);
+  setBaseSize(330,330);
   setMinimumSize(220, 270);
-  setMaximumSize(400,440);
-  resize(255,330);
+  setMaximumSize(450,440);
+  resize(330,330);
 
   QHBoxLayout * titleLayout = new QHBoxLayout;
   QHBoxLayout * cityLayout = new QHBoxLayout;
   QVBoxLayout * contentLayout = new QVBoxLayout;
   QHBoxLayout * buttons = new QHBoxLayout;
+  QHBoxLayout * covers = new QHBoxLayout;
   QVBoxLayout * mainLayout = new QVBoxLayout;
   QPushButton * seeMore = new QPushButton("Info. brutes");
   QPushButton * license = new QPushButton("WeathGet v" + version);
@@ -46,7 +47,12 @@ Window::Window(QString val, QString version)
   contentLayout->addWidget(wind_dir);
   contentLayout->addWidget(wind_speed);
   contentLayout->addWidget(visibility);
-  contentLayout->addWidget(cover);
+
+  covers->addWidget(cover);
+ //covers->setSpacing(30);
+  covers->addWidget(coverImage);
+
+  contentLayout->addLayout(covers);
 
   buttons->addWidget(seeMore);
   buttons->addWidget(license);

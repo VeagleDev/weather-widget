@@ -42,6 +42,7 @@ private:
         QLabel  * wind_speed = new QLabel("Vitesse du vent : - ");
         QLabel  * visibility = new QLabel("Visibilité : - ");
         QLabel  * cover = new QLabel("Couverture : - ");
+        QLabel * coverImage = new QLabel;
         QLineEdit * city = new QLineEdit;
         QLabel * c_label = new QLabel("Ville : ");
         QCompleter * completer;
