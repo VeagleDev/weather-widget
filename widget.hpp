@@ -24,8 +24,10 @@ public slots:
         void textRefresh(QString newText);
         void seeMoreInformations();
         void displayLicense();
+        void updateInformations();
         void goForUpdate(float newVersion);
         QString lookForICAO(QString nameOfCity);
+        QStringList findSimilarAirport(QString nameOfTheCity);
         QString correctTS(QString input);
 private:
 
@@ -37,7 +39,7 @@ private:
         QLabel * icon = new QLabel;
         QLabel  * station = new QLabel("Station : - ");
         QLabel  * date = new QLabel("Date : - ");
-        QLabel  * temp = new QLabel("Température : ");
+        QLabel  * temp = new QLabel("Température : -");
         QLabel  * wind_dir = new QLabel("Direction du vent : - ");
         QLabel  * wind_speed = new QLabel("Vitesse du vent : - ");
         QLabel  * visibility = new QLabel("Visibilité : - ");
@@ -63,6 +65,11 @@ private:
         QNetworkAccessManager *updateManager = new QNetworkAccessManager(this);
 
         QStringList cityList;
+
+        QSqlDatabase airportsDB = QSqlDatabase::addDatabase("QSQLITE");
+        //QSqlDatabase metarsDB = QSqlDatabase::addDatabase("QSQLITE");
+
+        bool hasLoaded = false;
 };
 
 

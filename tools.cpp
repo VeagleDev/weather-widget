@@ -1,5 +1,13 @@
 #include "widget.hpp"
 
+
+
+void Window::getNewInfos()
+{
+  manager->get(QNetworkRequest(QUrl("https://aviationweather-cprk.ncep.noaa.gov/adds/dataserver_current/current/metars.cache.csv")));
+}
+
+
 QString Window::correctTS(QString input)
 {
       // Récupération des valeurs dans le timestamp

@@ -3,6 +3,30 @@
 
 Window::Window(QString val, QString version)
 {
+  airportsDB.setDatabaseName(QDir::currentPath() + "/airports.sqlite3");
+
+
+  if(!airportsDB.open())
+      qDebug() << airportsDB.lastError();
+
+  QSqlQuery * query = new QSqlQuery(airportsDB);
+  if(!query->exec("CREATE TEMP TABLE metars ( "
+              "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+              "icao TEXT,"
+              "raw TEXT,"
+              "timest TEXT,"
+              "temperature REAL,"
+              "dewpoint REAL,"
+              "winddir  INTEGER,"
+              "windspeed REAL,"
+              "visibility REAL,"
+              "cover TEXT )"))
+  {
+      qDebug() << "Erreur création table metar";
+  }
+
+  qDebug() << "Path : " << QDir::currentPath() + "/airports.sqlite3";
+
   appVersion = version;
   icon->setPixmap(QPixmap(QDir::currentPath() + "/img/icon.png").scaled(43,43));
   setWindowIcon(QIcon(QPixmap(QDir::currentPath() + "/img/icon.png")));
@@ -49,7 +73,6 @@ Window::Window(QString val, QString version)
   contentLayout->addWidget(visibility);
 
   covers->addWidget(cover);
- //covers->setSpacing(30);
   covers->addWidget(coverImage);
 
   contentLayout->addLayout(covers);
@@ -83,7 +106,7 @@ Window::Window(QString val, QString version)
   QTimer *timer = new QTimer;
   connect(timer, &QTimer::timeout, this, &Window::getNewInfos);
   timer->singleShot(0, this, &Window::getNewInfos);
-  timer->start(1000*60);
+  timer->start(5000*60);
 }
 
 void Window::seeMoreInformations()

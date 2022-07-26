@@ -32,4 +32,7 @@
 #include "QPushButton"
 
 
+#include <QtSql>
+
+
 #endif // INCLUDES_HPP
