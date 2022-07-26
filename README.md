@@ -5,8 +5,8 @@
 
 ### Here are some pictures of the application : 
 <ol>
-    <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/img/image0.png">
-    <img src="https://github.com/Mysterious-Developers/weather-widget/blob/main/img/image1.png">
+    <img src="https://github.com/Mysterious-Developers/weather-widget/blob/78ee06931ab0126b622a7380adc2fdd5bfb703d5/img/image0.png">
+    <img src="https://github.com/Mysterious-Developers/weather-widget/blob/78ee06931ab0126b622a7380adc2fdd5bfb703d5/img/image1.png">
 </ol>
 
 <hr />
