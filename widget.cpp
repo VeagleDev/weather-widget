@@ -231,13 +231,49 @@ QString Window::lookForICAO(QString nameOfCity)
     int msb = QTime::currentTime().msecsSinceStartOfDay();
     QSqlQuery * query = new QSqlQuery(airportsDB);
     qDebug() << query->isActive() << query->isValid();
-    if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%'"))
+    if(nameOfCity.size() == 3 or 4)
     {
-        qDebug() << "Erreur commande";
-        return "";
+        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE iata = '" + nameOfCity + "' OR icao = '" + nameOfCity + "'"))
+        {
+            qDebug() << "iata/icao error";
+            return "";
+        }
+        else
+        {
+            if(!query->next())
+            {
+                if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%'"))
+                {
+                    qDebug() << "Erreur commande";
+                    return "";
+                }
+                else
+                {
+                    if(!query->next())
+                    {
+                                qDebug() << "Rien trouvé";
+                                return "";
+                    }
+                }
+            }
+        }
     }
-    if(query->next())
+    else
     {
+        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%'"))
+        {
+            qDebug() << "Erreur commande";
+            return "";
+        }
+        if(!query->next())
+        {
+                    qDebug() << "Rien trouvé";
+                    return "";
+        }
+    }
+
+
+
         airportIATA = query->value(1).toString();
         airportName = query->value(2).toString();
         country = query->value(3).toString();
@@ -245,19 +281,14 @@ QString Window::lookForICAO(QString nameOfCity)
         longitude = query->value(5).toString();
         qDebug() << "Temps " << (QTime::currentTime().msecsSinceStartOfDay() - msb) << " ms";
         return query->value(0).toString();
-    }
-    else
-    {
-        qDebug() << "Rien trouvé";
-        return "";
-    }
+
 }
 
 
 QStringList Window::findSimilarAirport(QString nameOfTheCity)
 {
     QSqlQuery * query = new QSqlQuery(airportsDB);
-    if(!query->exec("SELECT airports.name FROM airports WHERE airports.city LIKE '%" + nameOfTheCity + "%' OR airports.name LIKE '%" + nameOfTheCity + "%' COLLATE NOCASE"))
+    if(!query->exec("SELECT airports.name FROM airports WHERE" + ((nameOfTheCity.size() == 3 || nameOfTheCity.size() == 4) ? (" iata = '" + nameOfTheCity + "' OR icao = '" + nameOfTheCity + "' OR ") : " ") + "airports.city LIKE '%" + nameOfTheCity + "%' OR airports.name LIKE '%" + nameOfTheCity + "%' COLLATE NOCASE"))
     {
         qDebug() << "Erreur de similaritude - " << query->lastError() << " - " << query->executedQuery() ;
         return QStringList();
