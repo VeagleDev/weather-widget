@@ -108,12 +108,14 @@ void Window::replyFinished(QNetworkReply *resp){
 
 QString Window::lookForICAO(QString nameOfCity)
 {
+
     int msb = QTime::currentTime().msecsSinceStartOfDay();
     QSqlQuery * query = new QSqlQuery(airportsDB);
-    qDebug() << query->isActive() << query->isValid();
+
+
     if(nameOfCity.size() == 3 or 4)
     {
-        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE iata = '" + nameOfCity + "' OR icao = '" + nameOfCity + "'"))
+        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE iata LIKE '" + nameOfCity + "' OR icao LIKE '" + nameOfCity + "' COLLATE NOCASE"))
         {
             qDebug() << "iata/icao error";
             return "";
@@ -122,7 +124,7 @@ QString Window::lookForICAO(QString nameOfCity)
         {
             if(!query->next())
             {
-                if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%'"))
+                if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%' COLLATE NOCASE"))
                 {
                     qDebug() << "Erreur commande";
                     return "";
@@ -140,7 +142,7 @@ QString Window::lookForICAO(QString nameOfCity)
     }
     else
     {
-        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%'"))
+        if(!query->exec("SELECT icao,iata,name,country,latitude,longitude FROM airports WHERE name LIKE '%" + nameOfCity + "%' OR city LIKE '%" + nameOfCity + "%' COLLATE NOCASE"))
         {
             qDebug() << "Erreur commande";
             return "";
@@ -168,7 +170,7 @@ QString Window::lookForICAO(QString nameOfCity)
 QStringList Window::findSimilarAirport(QString nameOfTheCity)
 {
     QSqlQuery * query = new QSqlQuery(airportsDB);
-    if(!query->exec("SELECT airports.name FROM airports WHERE" + ((nameOfTheCity.size() == 3 || nameOfTheCity.size() == 4) ? (" iata = '" + nameOfTheCity + "' OR icao = '" + nameOfTheCity + "' OR ") : " ") + "airports.city LIKE '%" + nameOfTheCity + "%' OR airports.name LIKE '%" + nameOfTheCity + "%' COLLATE NOCASE"))
+    if(!query->exec("SELECT airports.name FROM airports WHERE" + ((nameOfTheCity.size() == 3 || nameOfTheCity.size() == 4) ? (" iata LIKE '" + nameOfTheCity + "' OR icao LIKE '" + nameOfTheCity + "' OR ") : " ") + "airports.city LIKE '%" + nameOfTheCity + "%' OR airports.name LIKE '%" + nameOfTheCity + "%' COLLATE NOCASE"))
     {
         qDebug() << "Erreur de similaritude - " << query->lastError() << " - " << query->executedQuery() ;
         return QStringList();
@@ -188,7 +190,7 @@ void Window::textRefresh(QString newText)
   {
       QStringList air = findSimilarAirport(newText);
       completer = new QCompleter(air, this);
-      qDebug() << air;
+      //qDebug() << air;
       completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
       completer->setCaseSensitivity(Qt::CaseInsensitive);
       completer->setMaxVisibleItems(10);

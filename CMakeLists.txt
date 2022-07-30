@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(WeathGet VERSION 0.1 LANGUAGES CXX)
+project(weather-widget VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -25,9 +25,10 @@ set(PROJECT_SOURCES
 
 )
 
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/img/icon.rc")
-    qt_add_executable(WeathGet
+    qt_add_executable(weather-widget
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ${app_icon_resource_windows}
@@ -36,19 +37,19 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
 else()
     if(ANDROID)
-        add_library(WeathGet SHARED
+        add_library(weather-widget SHARED
             ${PROJECT_SOURCES}
         )
    else()
-        add_executable(WeathGet
+        add_executable(weather-widget
             ${PROJECT_SOURCES}
         )
     endif()
 endif()
 
-target_link_libraries(WeathGet PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(weather-widget PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-set_target_properties(WeathGet PROPERTIES
+set_target_properties(weather-widget PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -57,12 +58,12 @@ set_target_properties(WeathGet PROPERTIES
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(WeathGet)
+    qt_finalize_executable(weather-widget)
 endif()
 
 
 find_package(Qt6 REQUIRED COMPONENTS Network)
-target_link_libraries(WeathGet PRIVATE Qt6::Network)
+target_link_libraries(weather-widget PRIVATE Qt6::Network)
 
 find_package(Qt6 REQUIRED COMPONENTS Sql)
-target_link_libraries(WeathGet PRIVATE Qt6::Sql)
+target_link_libraries(weather-widget PRIVATE Qt6::Sql)
