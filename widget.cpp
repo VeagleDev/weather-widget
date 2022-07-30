@@ -296,6 +296,7 @@ void Window::updateInformations()
     skyCover["NSC"] = "Pas de Nuages Significatifs (1/8)";
     skyCover["NCD"] = "Aucun Nuage (0/8)";
     skyCover["CAVOK"] = "Aucun Nuage, bonne visibilité (0/8)";
+    skyCover["CLR"] = "Ciel dégagé (0/8)";
 
     std::map<QString, QPixmap> skyImages;
     skyImages["SKC"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
@@ -306,6 +307,7 @@ void Window::updateInformations()
     skyImages["NSC"] = QPixmap(QDir::currentPath() + "/img/clouds/few.png", "PNG");
     skyImages["NCD"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
     skyImages["CAVOK"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
+    skyImages["CLR"] = QPixmap(QDir::currentPath() + "/img/clouds/skc.png", "PNG");
 
     // On cherche pour le code donné
     std::map<QString, QString>::iterator it = skyCover.find(m_cover);
