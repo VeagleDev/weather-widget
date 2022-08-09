@@ -1,5 +1,5 @@
 #include "widget.hpp"
-
+#include "QMenu"
 
 Window::Window(QString val, QString version)
 {
@@ -47,14 +47,36 @@ Window::Window(QString val, QString version)
   QHBoxLayout * buttons = new QHBoxLayout;
   QHBoxLayout * covers = new QHBoxLayout;
   QVBoxLayout * mainLayout = new QVBoxLayout;
-  QPushButton * seeMore = new QPushButton("Info. brutes");
   QPushButton * license = new QPushButton("WeathGet v" + version);
   license->setStyleSheet("color: #5555FF;\n"
                          "text-decoration: underline;"
                          "border: 0px solid");
   license->setFixedSize(85,20);
 
-  seeMore->setFixedSize(75,20);
+
+
+
+  QStringList liste;
+  QFile * favorites = new QFile(QDir::currentPath() + "/favorites.txt");
+  if(favorites->open(QFile::ReadOnly))
+  {
+      liste << "";
+      while(!favorites->atEnd())
+      {
+          QString line = QString(favorites->readLine());
+          line.remove('\r');
+          line.remove('\n');
+          if(!line.isEmpty())
+              liste << line;
+      }
+      menu->addItems(liste);
+      mainLayout->addWidget(menu);
+  }
+
+
+
+
+
 
   titleLayout->addWidget(icon, Qt::AlignRight);
   titleLayout->addWidget(name, Qt::AlignCenter);
@@ -77,7 +99,6 @@ Window::Window(QString val, QString version)
 
   contentLayout->addLayout(covers);
 
-  buttons->addWidget(seeMore);
   buttons->addWidget(license);
   contentLayout->addSpacing(5);
   contentLayout->addLayout(buttons);
@@ -89,6 +110,11 @@ Window::Window(QString val, QString version)
   mainLayout->addSpacing(10);
   mainLayout->addLayout(contentLayout, Qt::AlignCenter);
 
+
+
+
+
+
   setLayout(mainLayout);
 
   connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -96,8 +122,8 @@ Window::Window(QString val, QString version)
 
   QObject::connect(city, SIGNAL(editingFinished()), this, SLOT(searchCity()));
   QObject::connect(city, SIGNAL(textChanged(QString)), this, SLOT(textRefresh(QString)));
-  QObject::connect(seeMore, SIGNAL(clicked()), this, SLOT(seeMoreInformations()));
   QObject::connect(license, SIGNAL(clicked()), this, SLOT(displayLicense()));
+  QObject::connect(menu, SIGNAL(currentTextChanged(QString)), this, SLOT(setFavorityCity(QString)));
 
 
   manager->get(QNetworkRequest(QUrl("https://aviationweather-cprk.ncep.noaa.gov/adds/dataserver_current/current/metars.cache.csv")));
@@ -108,6 +134,34 @@ Window::Window(QString val, QString version)
   timer->singleShot(0, this, &Window::getNewInfos);
   timer->start(5000*60);
 }
+
+
+
+
+void Window::setFavorityCity(QString m_city)
+{
+    if(m_city != "" && hasLoaded)
+    {
+        city->setText(m_city);
+        cityName = m_city;
+        stationCode = lookForICAO(m_city);
+        updateInformations();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Window::seeMoreInformations()
 {

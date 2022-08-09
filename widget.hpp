@@ -9,6 +9,7 @@
 #define WIDGET_H
 
 #include "includes.hpp"
+#include "QComboBox"
 
 class Window : public QWidget
 {
@@ -29,10 +30,11 @@ public slots:
         QString lookForICAO(QString nameOfCity);
         QStringList findSimilarAirport(QString nameOfTheCity);
         QString correctTS(QString input);
+        void setFavorityCity(QString city);
 private:
 
 
-
+        QComboBox * menu = new QComboBox;
 
         QLabel * value;
         QLabel * name;
