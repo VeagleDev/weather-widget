@@ -11,6 +11,18 @@
 
 <hr />
 
+### Tech stack
+
+This application is no longer in development. But you can still make suggestions or Pull Requests, it will stay active.
+This application is made with the C++ langage, using the Qt Framework.
+The Qt Framework has it whole environment and all an ecosystem like QVector, QMap etc...
+You can see all the files below and their utility. You can ask questions about working.
+
+So to explane a bit, at startup, the app looks for Update, and then loads all the informations about weather.
+It take out the informations from the NSAA website as CSV. It parses all the data and add it to SQLite memory server.
+Then when the user enters a IATA, ICAO or even the name of the airport, it checks if this one exists and then it displays the information. Every few minutes, the application reload the information so you can have the newest informations !
+
+<hr />
 
 
 ### Files
