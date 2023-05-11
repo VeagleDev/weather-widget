@@ -9,7 +9,6 @@
 #define WIDGET_H
 
 #include "includes.hpp"
-#include "QComboBox"
 
 class Window : public QWidget
 {

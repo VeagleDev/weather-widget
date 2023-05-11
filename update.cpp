@@ -1,5 +1,5 @@
 #include "widget.hpp"
-#include "QDesktopServices"
+
 
 void Window::updateReplyFinished(QNetworkReply *resp){
 

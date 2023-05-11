@@ -1,5 +1,5 @@
 #include "widget.hpp"
-#include "QMenu"
+
 
 Window::Window(QString val, QString version)
 {

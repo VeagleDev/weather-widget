@@ -30,6 +30,10 @@
 #include "QNetworkRequest"
 #include "QNetworkReply"
 #include "QPushButton"
+#include "QMenu"
+#include "QComboBox"
+#include <fstream>
+#include "QDesktopServices"
 
 
 #include <QtSql>
