@@ -11,6 +11,22 @@
 
 <hr />
 
+
+
+### Files
+
+All .hpp files are only header matching with their source code .cpp
+Here are the important .cpp files : 
+
+- `main.cpp` : Main file which creates the window and call the version checking
+- `tools.cpp` : Set of tools used everywhere in the code
+- `ui.cpp` : Code that creates the User Interface
+- `update.cpp` : File that totally handles the auto-update of the application
+- `widget.cpp` : The most important file that fetch, analyze the METARs, save the informations and search the weather and name information of the airport and displays it
+
+
+<hr />
+
 ### How to install WeathGet ?
 
 * Download the [latest release](https://github.com/mysterious-Developers/weather-widget/releases/latest)
