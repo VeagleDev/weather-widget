@@ -86,7 +86,7 @@ void Window::goForUpdate(float newVersion)
     if(ret == QMessageBox::No)
         return;
 
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::currentPath() + "/update.bat"));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::currentPath() + "/Update.bat"));
     qApp->exit(0);
 
 }
