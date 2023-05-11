@@ -68,7 +68,8 @@ Window::Window(QString val, QString version)
                          "border: 0px solid");
   license->setFixedSize(85,20);
 
-
+  coverImage->setFixedHeight(40);
+  coverImage->setAlignment(Qt::AlignCenter);
 
 
   QStringList liste;
@@ -87,11 +88,6 @@ Window::Window(QString val, QString version)
       menu->addItems(liste);
       mainLayout->addWidget(menu);
   }
-
-
-
-
-
 
   titleLayout->addWidget(icon, Qt::AlignRight);
   titleLayout->addWidget(name, Qt::AlignCenter);
@@ -159,19 +155,6 @@ void Window::setFavorityCity(QString m_city)
         updateInformations();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void Window::seeMoreInformations()

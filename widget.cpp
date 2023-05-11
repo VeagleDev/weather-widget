@@ -77,6 +77,8 @@ void Window::replyFinished(QNetworkReply *resp){
           }
       }
 
+      setFavorityCity("Nantes");
+
   }
   else
   {
