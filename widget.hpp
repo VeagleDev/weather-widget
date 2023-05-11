@@ -69,7 +69,6 @@ private:
         QStringList cityList;
 
         QSqlDatabase airportsDB = QSqlDatabase::addDatabase("QSQLITE");
-        //QSqlDatabase metarsDB = QSqlDatabase::addDatabase("QSQLITE");
 
         bool hasLoaded = false;
 };

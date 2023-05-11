@@ -11,16 +11,16 @@ Window::Window(QString val, QString version)
 
   QSqlQuery * query = new QSqlQuery(airportsDB);
   if(!query->exec("CREATE TEMP TABLE metars ( "
-              "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-              "icao TEXT,"
-              "raw TEXT,"
-              "timest TEXT,"
-              "temperature REAL,"
-              "dewpoint REAL,"
-              "winddir  INTEGER,"
-              "windspeed REAL,"
-              "visibility REAL,"
-              "cover TEXT )"))
+                  "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                  "icao TEXT,"
+                  "raw TEXT,"
+                  "timest TEXT,"
+                  "temperature REAL,"
+                  "dewpoint REAL,"
+                  "winddir  INTEGER,"
+                  "windspeed REAL,"
+                  "visibility REAL,"
+                  "cover TEXT )"))
   {
       qDebug() << "Erreur création table metar";
   }
@@ -32,7 +32,7 @@ Window::Window(QString val, QString version)
   setWindowIcon(QIcon(QPixmap(QDir::currentPath() + "/img/icon.png")));
 
   connect(updateManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updateReplyFinished(QNetworkReply*)));
-  updateManager->get(QNetworkRequest(QUrl("https://www.mysteriousdev.fr/wg.version")));
+  updateManager->get(QNetworkRequest(QUrl("https://veagle.fr/wg.version")));
 
   name = new QLabel("Weather <br>&nbsp;&nbsp;<font color=\"#666666\">v" + version + "</font>");
 
@@ -109,10 +109,6 @@ Window::Window(QString val, QString version)
   city->setText("Nantes");
   mainLayout->addSpacing(10);
   mainLayout->addLayout(contentLayout, Qt::AlignCenter);
-
-
-
-
 
 
   setLayout(mainLayout);
