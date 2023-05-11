@@ -190,7 +190,6 @@ void Window::textRefresh(QString newText)
   {
       QStringList air = findSimilarAirport(newText);
       completer = new QCompleter(air, this);
-      //qDebug() << air;
       completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
       completer->setCaseSensitivity(Qt::CaseInsensitive);
       completer->setMaxVisibleItems(10);

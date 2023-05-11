@@ -34,6 +34,8 @@
 #include "QComboBox"
 #include <fstream>
 #include "QDesktopServices"
+#include <QSystemTrayIcon>
+
 
 
 #include <QtSql>

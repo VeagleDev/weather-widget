@@ -3,7 +3,22 @@
 
 Window::Window(QString val, QString version)
 {
-  airportsDB.setDatabaseName(QDir::currentPath() + "/airports.sqlite3");
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon("img/icon.png"));
+
+
+    // Créer un menu contextuel avec un seul élément "Quitter"
+    QMenu *trayMenu = new QMenu();
+    QAction *quitAction = new QAction("Quitter", trayMenu);
+    connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
+    trayMenu->addAction(quitAction);
+
+    // Définir le menu contextuel pour l'icône de la barre d'état système
+    trayIcon->setContextMenu(trayMenu);
+    trayIcon->show();
+
+
+    airportsDB.setDatabaseName(QDir::currentPath() + "/airports.sqlite3");
 
 
   if(!airportsDB.open())

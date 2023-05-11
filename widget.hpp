@@ -32,6 +32,7 @@ public slots:
         void setFavorityCity(QString city);
 private:
 
+        QSystemTrayIcon *trayIcon;
 
         QComboBox * menu = new QComboBox;
 
